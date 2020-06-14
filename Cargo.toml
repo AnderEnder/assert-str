@@ -1,0 +1,22 @@
+[package]
+name = "assert-str"
+version = "0.1.0"
+authors = ["Andrii Radyk <ander.ender@gmail.com>"]
+description = """
+Macros for asserting multiline strings
+"""
+homepage = "https://github.com/AnderEnder/assert-str"
+repository = "https://github.com/AnderEnder/assert-str"
+readme = "README.md"
+keywords = [
+    "testing",
+    "assert",
+]
+categories = ["development-tools::testing"]
+license = "Apache-2.0/MIT"
+exclude = [
+    ".github",
+]
+edition = "2018"
+
+[dependencies]
