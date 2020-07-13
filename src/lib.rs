@@ -15,7 +15,7 @@
 ///
 /// # Examples
 ///
-/// Test on equality two strings generated on different OSes:
+/// Test on equality of two strings generated on different OSes:
 ///
 /// ```
 /// use assert_str::assert_str_eq;
@@ -61,7 +61,7 @@ macro_rules! assert_str_eq {
 ///
 /// # Examples
 ///
-/// Test two strings generated on different OSes:
+/// Test on inequality of two strings generated on different OSes:
 ///
 /// ```
 /// use assert_str::assert_str_ne;
@@ -108,12 +108,12 @@ macro_rules! assert_str_ne {
 ///
 /// # Examples
 ///
-/// Test on equality two strings generated on different OSes:
+/// Test on equality of two trimmed strings generated on different OSes:
 ///
 /// ```
 /// use assert_str::assert_str_trim_eq;
 /// assert_str_trim_eq!("<html>\t \n\t<head> \n\t</head></html>",
-///     "<html><head></head></html>", "Responces should be equal");
+///     "<html>\r\n<head>\r\n</head></html>", "Responces should be equal");
 /// ```
 ///
 #[macro_export]
@@ -124,13 +124,13 @@ macro_rules! assert_str_trim_eq {
                 let left_lines = left_val
                     .lines()
                     .map(|line| line.trim())
-                    .filter(|line| line.is_empty())
+                    .filter(|line| !line.is_empty())
                     .collect::<Vec<_>>();
 
                 let right_lines = right_val
                     .lines()
                     .map(|line| line.trim())
-                    .filter(|line| line.is_empty())
+                    .filter(|line| !line.is_empty())
                     .collect::<Vec<_>>();
 
                 if !(left_lines == right_lines) {
@@ -150,13 +150,13 @@ macro_rules! assert_str_trim_eq {
                 let left_lines = left_val
                     .lines()
                     .map(|line| line.trim())
-                    .filter(|line| line.is_empty())
+                    .filter(|line| !line.is_empty())
                     .collect::<Vec<_>>();
 
                 let right_lines = right_val
                     .lines()
                     .map(|line| line.trim())
-                    .filter(|line| line.is_empty())
+                    .filter(|line| !line.is_empty())
                     .collect::<Vec<_>>();
 
                 if !(left_lines == right_lines) {
@@ -175,16 +175,148 @@ macro_rules! assert_str_trim_eq {
 ///
 /// # Examples
 ///
-/// Test on equality two strings generated on different OSes:
+/// Test on equality of two trimmed strings:
 ///
 /// ```
 /// use assert_str::assert_str_trim_ne;
 /// assert_str_trim_ne!("<html>\t \n\t<head> \n\t</head></html>",
-///     "<HTML><head></head></html>", "Responces should be equal");
+///     "<HTML><head></head></html>", "Responces should not be equal");
 /// ```
 ///
 #[macro_export]
 macro_rules! assert_str_trim_ne {
+    ($left:expr, $right:expr) => ({
+        match (&$left, &$right) {
+            (left_val, right_val) => {
+                let left_lines = left_val
+                    .lines()
+                    .map(|x| x.trim())
+                    .filter(|line| !line.is_empty())
+                    .collect::<Vec<_>>();
+
+                let right_lines = right_val
+                    .lines()
+                    .map(|x| x.trim())
+                    .filter(|line| !line.is_empty())
+                    .collect::<Vec<_>>();
+
+                if (left_lines == right_lines) {
+                    panic!(r#"assertion failed: `(left != right)`
+  left: `{}`,
+ right: `{}`"#, left_lines.join("\n"), right_lines.join("\n"))
+                }
+            }
+        }
+    });
+    ($left:expr, $right:expr,) => ({
+        $crate::assert_str_trim_ne!($left, $right)
+    });
+    ($left:expr, $right:expr, $($arg:tt)+) => ({
+        match (&$left, &$right) {
+            (left_val, right_val) => {
+                let left_lines = left_val
+                    .lines()
+                    .map(|x| x.trim())
+                    .filter(|line| !line.is_empty())
+                    .collect::<Vec<_>>();
+
+                let right_lines = right_val
+                    .lines()
+                    .map(|x| x.trim())
+                    .filter(|line| !line.is_empty())
+                    .collect::<Vec<_>>();
+
+                if (left_lines == right_lines) {
+                    panic!(r#"assertion failed: `(left != right)`
+  left: `{}`,
+ right: `{}`: {}"#, left_lines.join("\n"), right_lines.join("\n"),
+                    format_args!($($arg)+))
+                }
+            }
+        }
+    });
+}
+
+/// Asserts that multiline strings(`&str` or `String`) are identical when
+/// every line is trimmed and new lines are removed.
+///
+/// # Examples
+///
+/// Test on equality of two trimmed strings:
+///
+/// ```
+/// use assert_str::assert_str_trim_all_eq;
+/// assert_str_trim_all_eq!("<html>\t \n\t<head> \n\t</head></html>",
+///     "<html><head></head></html>", "Responces should be equal");
+/// ```
+///
+#[macro_export]
+macro_rules! assert_str_trim_all_eq {
+    ($left:expr, $right:expr) => ({
+        match (&$left, &$right) {
+            (left_val, right_val) => {
+                let left_lines = left_val
+                    .lines()
+                    .map(|line| line.trim())
+                    .filter(|line| !line.is_empty())
+                    .collect::<Vec<_>>();
+
+                let right_lines = right_val
+                    .lines()
+                    .map(|line| line.trim())
+                    .filter(|line| !line.is_empty())
+                    .collect::<Vec<_>>();
+
+                if !(left_lines == right_lines) {
+                    panic!(r#"assertion failed: `(left == right)`
+  left: `{}`,
+ right: `{}`"#, left_lines.join("\n"), right_lines.join("\n"))
+                }
+            }
+        }
+    });
+    ($left:expr, $right:expr,) => ({
+        $crate::assert_str_trim_eq!($left, $right)
+    });
+    ($left:expr, $right:expr, $($arg:tt)+) => ({
+        match (&$left, &$right) {
+            (left_val, right_val) => {
+                let left_lines = left_val
+                    .lines()
+                    .map(|line| line.trim())
+                    .fold(String::new(), |acc, x| acc + x);
+
+                let right_lines = right_val
+                    .lines()
+                    .map(|line| line.trim())
+                    .fold(String::new(), |acc, x| acc + x);
+
+                if !(left_lines == right_lines) {
+                    panic!(r#"assertion failed: `(left == right)`
+  left: `{}`,
+ right: `{}`: {}"#, left_lines, right_lines,
+                    format_args!($($arg)+))
+                }
+            }
+        }
+    });
+}
+
+/// Asserts that multiline strings([&str] or [String]) are identical when
+/// every line is trimmed and new lines are removed.
+///
+/// # Examples
+///
+/// Test on inequality of two trimmed strings:
+///
+/// ```
+/// use assert_str::assert_str_trim_all_ne;
+/// assert_str_trim_all_ne!("<html>\t \n\t<head> \n\t</head></html>",
+///     "<HTML><head></head></html>", "Responces should not be equal");
+/// ```
+///
+#[macro_export]
+macro_rules! assert_str_trim_all_ne {
     ($left:expr, $right:expr) => ({
         match (&$left, &$right) {
             (left_val, right_val) => {
@@ -197,6 +329,7 @@ macro_rules! assert_str_trim_ne {
                     .lines()
                     .map(|x| x.trim())
                     .fold(String::new(), |acc, x| acc + x);
+
                 if (left_lines == right_lines) {
                     panic!(r#"assertion failed: `(left != right)`
   left: `{}`,
@@ -214,12 +347,13 @@ macro_rules! assert_str_trim_ne {
                 let left_lines = left_val
                     .lines()
                     .map(|x| x.trim())
-                    .fold(String::new(), |acc, x| acc + x + "\n");
+                    .fold(String::new(), |acc, x| acc + x);
 
                 let right_lines = right_val
                     .lines()
                     .map(|x| x.trim())
-                    .fold(String::new(), |acc, x| acc + x + "\n");
+                    .fold(String::new(), |acc, x| acc + x);
+
                 if (left_lines == right_lines) {
                     panic!(r#"assertion failed: `(left != right)`
   left: `{}`,
@@ -306,5 +440,47 @@ mod tests {
         assert_str_trim_ne!(&left, right, "Message");
         assert_str_trim_ne!(left, &right, "Message");
         assert_str_trim_ne!(&left, &right, "Message");
+    }
+
+    #[test]
+    fn cross_str_trim_all_equal() {
+        let left = "String  \n Line ".to_owned();
+        let right = "String\r\nLine".to_owned();
+        assert_str_trim_all_eq!(left, right);
+        assert_str_trim_all_eq!(&left, right);
+        assert_str_trim_all_eq!(left, &right);
+        assert_str_trim_all_eq!(&left, &right);
+        assert_str_trim_all_eq!(left, right,);
+    }
+
+    #[test]
+    fn cross_str_trim_all_equal_message() {
+        let left = "String  \n Line ".to_owned();
+        let right = "StringLine".to_owned();
+        assert_str_trim_all_eq!(&left, right, "Message");
+        assert_str_trim_all_eq!(left, &right, "Message");
+        assert_str_trim_all_eq!(left, right, "Message");
+        assert_str_trim_all_eq!(&left, &right, "Message");
+    }
+
+    #[test]
+    fn cross_str_trim_all_not_equal() {
+        let left = "String  \n Line ".to_owned();
+        let right = "Stringline".to_owned();
+        assert_str_trim_all_ne!(left, right);
+        assert_str_trim_all_ne!(&left, right);
+        assert_str_trim_all_ne!(left, &right);
+        assert_str_trim_all_ne!(&left, &right);
+        assert_str_trim_all_ne!(left, right,);
+    }
+
+    #[test]
+    fn cross_str_trim_all_not_equal_message() {
+        let left = "String  \n Line ".to_owned();
+        let right = "String12".to_owned();
+        assert_str_trim_all_ne!(left, right, "Message");
+        assert_str_trim_all_ne!(&left, right, "Message");
+        assert_str_trim_all_ne!(left, &right, "Message");
+        assert_str_trim_all_ne!(&left, &right, "Message");
     }
 }
