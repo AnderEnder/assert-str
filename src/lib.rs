@@ -8,7 +8,7 @@
 //! [each individual macro](#macros).
 //!
 //! [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
-//! [`&str`]: https://doc.rust-lang.org/std/str/index.html
+//! [`&str`]: https://doc.rust-lang.org/std/primitive.str.html
 
 /// Asserts that multiline strings([`&str`] or [`String`]) are identical. It
 /// ignores different new line characters for different OSes: `\n` or `\r\n`.
@@ -22,6 +22,8 @@
 /// assert_str_eq!("This string\nEnd", "This string\r\nEnd", "Responces should be equal");
 /// ```
 ///
+/// [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
+/// [`&str`]: https://doc.rust-lang.org/std/primitive.str.html
 #[macro_export]
 macro_rules! assert_str_eq {
     ($left:expr, $right:expr) => ({
@@ -56,7 +58,7 @@ macro_rules! assert_str_eq {
     });
 }
 
-/// Asserts that multiline strings(`&str` or `String`) are not identical. It
+/// Asserts that multiline strings([`&str`] or [`String`]) are not identical. It
 /// ignores different new line characters for different OSes: `\n` or `\r\n`.
 ///
 /// # Examples
@@ -68,6 +70,8 @@ macro_rules! assert_str_eq {
 /// assert_str_ne!("This string\nEnd", "This string\r\nFinalEnd", "Responces should not be equal");
 /// ```
 ///
+/// [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
+/// [`&str`]: https://doc.rust-lang.org/std/primitive.str.html
 #[macro_export]
 macro_rules! assert_str_ne {
     ($left:expr, $right:expr) => ({
@@ -102,7 +106,7 @@ macro_rules! assert_str_ne {
     });
 }
 
-/// Asserts that multiline strings(`&str` or `String`) are identical when
+/// Asserts that multiline strings([`&str`] or [`String`]) are identical when
 /// every line is trimmed and empty lines are removed. It ignores different
 /// new line characters for different OSes: `\n` or `\r\n`.
 ///
@@ -116,6 +120,8 @@ macro_rules! assert_str_ne {
 ///     "<html>\r\n<head>\r\n</head></html>", "Responces should be equal");
 /// ```
 ///
+/// [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
+/// [`&str`]: https://doc.rust-lang.org/std/primitive.str.html
 #[macro_export]
 macro_rules! assert_str_trim_eq {
     ($left:expr, $right:expr) => ({
@@ -170,7 +176,7 @@ macro_rules! assert_str_trim_eq {
     });
 }
 
-/// Asserts that multiline strings([&str] or [String]) are identical. It
+/// Asserts that multiline strings([`&str`] or [`String`]) are identical. It
 /// ignores different new line characters for different OSes: `\n` or `\r\n`
 ///
 /// # Examples
@@ -183,6 +189,8 @@ macro_rules! assert_str_trim_eq {
 ///     "<HTML><head></head></html>", "Responces should not be equal");
 /// ```
 ///
+/// [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
+/// [`&str`]: https://doc.rust-lang.org/std/primitive.str.html
 #[macro_export]
 macro_rules! assert_str_trim_ne {
     ($left:expr, $right:expr) => ({
@@ -237,7 +245,7 @@ macro_rules! assert_str_trim_ne {
     });
 }
 
-/// Asserts that multiline strings(`&str` or `String`) are identical when
+/// Asserts that multiline strings([`&str`] or [`String`]) are identical when
 /// every line is trimmed and new lines are removed.
 ///
 /// # Examples
@@ -250,6 +258,8 @@ macro_rules! assert_str_trim_ne {
 ///     "<html><head></head></html>", "Responces should be equal");
 /// ```
 ///
+/// [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
+/// [`&str`]: https://doc.rust-lang.org/std/primitive.str.html
 #[macro_export]
 macro_rules! assert_str_trim_all_eq {
     ($left:expr, $right:expr) => ({
@@ -302,7 +312,7 @@ macro_rules! assert_str_trim_all_eq {
     });
 }
 
-/// Asserts that multiline strings([&str] or [String]) are identical when
+/// Asserts that multiline strings([`&str`] or [`String`]) are identical when
 /// every line is trimmed and new lines are removed.
 ///
 /// # Examples
@@ -315,6 +325,8 @@ macro_rules! assert_str_trim_all_eq {
 ///     "<HTML><head></head></html>", "Responces should not be equal");
 /// ```
 ///
+/// [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
+/// [`&str`]: https://doc.rust-lang.org/std/primitive.str.html
 #[macro_export]
 macro_rules! assert_str_trim_all_ne {
     ($left:expr, $right:expr) => ({
